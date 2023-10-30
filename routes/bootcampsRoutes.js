@@ -1,36 +1,49 @@
 const express = require('express')
+const bootcampModel = require('../models/bootcampModel')
 const router = express.Router()
 
-router.get('/', function(req,res){
+
+router.get('/',async function(req,res){
+
+    const bootcamps = await bootcampModel.find()
     res.json({
         success:true,
-        msg:"aqui se traeran todos los bootcamps"
+        data: bootcamps
     })
 })
 
-router.get('/:id', function(req,res){
+router.get('/:id', async (req,res) => {
+    const bootcamp =  await bootcampModel.findById(req.params.id)
     res.json({
         success:true,
-        msg:`aqui se traera el bootcamp cuyo id es :${req.params.id}`
+        data : bootcamp 
     })
 })
+
+
 router.put ('/:id',function (req,res){
     res.json({
         success:true,
         msg: `aqui se editara un bootcamp`
     })
 })
-router.post ('/',function (req,res){
+
+
+router.post ('/', async  (req,res)=>{
+    const newBootcamp = await  bootcampModel.create(req.body)
     res.json({
         success:true,
-        msg: `aqui se creara un bootcamp`
+        data : newBootcamp 
     })
 })
 
-router.delete ('/:id', function(req,res){
+
+router.delete ('/:id', async(req,res)=>{
+    const bootcampdelete = await  bootcampModel.findOneAndDelete(req.body)
     res.json({
         success:true,
-        msg:`aqui se eliminara el bootcamp cuyo id es :${req.params.id}`
+        data : bootcampdelete 
+        
     })
 })
 
